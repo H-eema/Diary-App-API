@@ -7,3 +7,6 @@ class Diary(models.Model):
     body = models.TextField()
     writer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     update_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.date.date())
