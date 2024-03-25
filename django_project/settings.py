@@ -41,8 +41,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # 3rd Party
+    "rest_framework",
     # Local
     "accounts",
+    "diaries",
 ]
 
 MIDDLEWARE = [
@@ -126,3 +129,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Auth user model
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+# Rest Framework
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
+}
