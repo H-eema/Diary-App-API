@@ -41,8 +41,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     # 3rd Party
     "rest_framework",
+    "rest_framework.authtoken",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
     # Local
     "accounts",
     "diaries",
@@ -55,6 +62,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -120,7 +128,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
 
@@ -133,6 +141,28 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 # Rest Framework
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ],
 }
+
+# dj-rest-auth
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "diary-auth",
+    "JWT_AUTH_REFRESH_COOKIE": "diary-refresh-token",
+    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer",
+    "PASSWORD_RESET_CONFIRM_SERIALIZER": "accounts.serializers.CustomPasswordResetConfirmSerializer",
+}
+
+# Allauth
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+# Email
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
