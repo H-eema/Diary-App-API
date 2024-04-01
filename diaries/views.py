@@ -1,3 +1,4 @@
+from datetime import timezone
 from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
@@ -12,6 +13,10 @@ class DiaryListView(ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Diary.objects.filter(writer=self.request.user).order_by("-date")
+        date_param = self.request.query_params.get("date_param")
+
+        if date_param:
+            queryset = queryset.filter(date__date=date_param)
 
         return queryset
 
